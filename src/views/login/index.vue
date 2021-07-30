@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="请输入邮箱地址"
           name="username"
           type="text"
           tabindex="1"
@@ -30,7 +30,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -41,14 +41,80 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-row>
+        <el-col offset="4" span="7">
+          <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">登陆</el-button>
+        </el-col>
+        <el-col offset="2" span="7">
+          <el-button style="width:100%;" @click.native.prevent="handleRegister">注册</el-button>
+        </el-col>
+      </el-row>
 
-      <div class="tips">
+      <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
-      </div>
+      </div> -->
 
     </el-form>
+
+    <el-dialog title="收货地址" :visible.sync="showRegisterDialog">
+      <el-form :model="registerForm">
+        <el-form-item prop="username">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="username"
+            v-model="registerForm.username"
+            placeholder="请输入邮箱地址"
+            name="username"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="registerForm.password"
+            :type="passwordType"
+            placeholder="请输入密码"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
+
+        <el-form-item class="verify-code" prop="username">
+          <el-input
+            ref="verifyCode"
+            v-model="registerForm.verifyCode"
+            placeholder="验证码"
+            name="verifyCode"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+          <span>
+            <el-button>获取验证码</el-button>
+          </span>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="showRegisterDialog = false">取 消</el-button>
+        <el-button type="primary" @click="showRegisterDialog = false">注 册</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -74,8 +140,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -83,13 +149,20 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+
+      showRegisterDialog: false,
+      registerForm: {
+        username: '',
+        password: '',
+        verifyCode: ''
+      }
     }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        // this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
@@ -120,6 +193,11 @@ export default {
           return false
         }
       })
+    },
+    handleRegister() {
+      console.log('this is handleRegister')
+      // this.$router.push({ path: '/register' })
+      this.showRegisterDialog = true
     }
   }
 }
@@ -141,6 +219,7 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+
   .el-input {
     display: inline-block;
     height: 47px;
@@ -169,6 +248,14 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
   }
+
+  .verify-code {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: white;
+    border-radius: 5px;
+    color: #454545;
+    width: 20%;
+  }
 }
 </style>
 
@@ -192,17 +279,17 @@ $light_gray:#eee;
     overflow: hidden;
   }
 
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
+  // .tips {
+  //   font-size: 14px;
+  //   color: #fff;
+  //   margin-bottom: 10px;
 
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
+  //   span {
+  //     &:first-of-type {
+  //       margin-right: 16px;
+  //     }
+  //   }
+  // }
 
   .svg-container {
     padding: 6px 5px 6px 15px;
