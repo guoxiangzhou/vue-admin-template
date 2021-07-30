@@ -67,23 +67,6 @@
             show-password
           />
         </el-form-item>
-
-        <el-form-item label="验证码" prop="verifyCode">
-          <el-row>
-            <el-col :span="6">
-              <el-input
-                v-model="registerForm.verifyCode"
-                placeholder="输入验证码"
-                type="text"
-                tabindex="3"
-                auto-complete="off"
-              />
-            </el-col>
-            <el-col :offset="1" :span="1">
-              <el-button @click="getVerifyCode">获取</el-button>
-            </el-col>
-          </el-row>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showRegisterDialog = false">取 消</el-button>
@@ -94,6 +77,8 @@
 </template>
 
 <script>
+
+import { Message } from 'element-ui'
 
 export default {
   name: 'Login',
@@ -108,8 +93,7 @@ export default {
       showRegisterDialog: false,
       registerForm: {
         username: '',
-        password: '',
-        verifyCode: ''
+        password: ''
       }
     }
   },
@@ -133,23 +117,43 @@ export default {
         })
     },
     showRegisterDlg() {
-      this.registerForm.username = ''
+      this.registerForm.username = '8188755@qq.com'
       this.registerForm.password = ''
-      this.registerForm.verifyCode = ''
       this.showRegisterDialog = true
     },
-    getVerifyCode() {
+    // getVerifyCode() {
+    //   this.$store
+    //     .dispatch('user/getVerifyCode', this.registerForm.username)
+    //     .then(() => {
+    //       console.log('获取验证码成功')
+    //     })
+    //     .catch(() => {
+    //       console.log('获取验证码失败')
+    //     })
+    // },
+    handleRegister() {
+      console.log('handle register: ' + JSON.stringify(this.registerForm))
       this.$store
-        .dispatch('user/login', this.loginForm)
-        .then(() => {
-          console.log('获取验证码成功')
+        .dispatch('user/register', this.registerForm)
+        .then((res) => {
+          console.log('服务器返回结果 : ' + JSON.stringify(res))
+          if (res.code !== 0) {
+            Message({
+              message: res.msg,
+              type: 'error',
+              duration: 5 * 1000
+            })
+          } else {
+            Message({
+              message: '注册成功',
+              type: 'success',
+              duration: 5 * 1000
+            })
+          }
         })
         .catch(() => {
-          console.log('获取验证码失败')
+          console.log('注册失败')
         })
-    },
-    handleRegister() {
-      console.log('handle register')
     }
   }
 }

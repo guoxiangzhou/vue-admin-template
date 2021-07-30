@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, getVerifyCode, register } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -28,6 +28,31 @@ const mutations = {
 }
 
 const actions = {
+  // user register
+  register({ commit }, userInfo) {
+    console.log(JSON.stringify(userInfo))
+    const { username, password } = userInfo
+    return new Promise((resolve, reject) => {
+      register({ name: username.trim(), name_type: 'email', password: password }).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  // get verify code
+  getVerifyCode({ commit }, email) {
+    return new Promise((resolve, reject) => {
+      getVerifyCode(email.trim()).then(response => {
+        console.log('response : ' + response)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
