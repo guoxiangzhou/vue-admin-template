@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function register(data) {
   console.log(JSON.stringify(data))
   return request({
-    url: '/api/v1/user',
+    url: '/api/v1/user/register',
     method: 'post',
     data
   })
@@ -11,8 +11,8 @@ export function register(data) {
 
 export function getVerifyCode(email) {
   return request({
-    url: '/api/v1/user/verify?email=' + email,
-    method: 'put'
+    url: '/api/v1/verify/code?user=' + email,
+    method: 'get'
   })
 }
 

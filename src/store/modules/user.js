@@ -31,9 +31,9 @@ const actions = {
   // user register
   register({ commit }, userInfo) {
     console.log(JSON.stringify(userInfo))
-    const { username, password } = userInfo
+    const { username, password, verifyCode } = userInfo
     return new Promise((resolve, reject) => {
-      register({ name: username.trim(), name_type: 'email', password: password }).then(response => {
+      register({ name: username.trim(), verify_code: verifyCode, password: password }).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -45,8 +45,7 @@ const actions = {
   getVerifyCode({ commit }, email) {
     return new Promise((resolve, reject) => {
       getVerifyCode(email.trim()).then(response => {
-        console.log('response : ' + response)
-        resolve()
+        resolve(response)
       }).catch(error => {
         reject(error)
       })

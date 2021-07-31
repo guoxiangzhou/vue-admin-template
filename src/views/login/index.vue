@@ -67,6 +67,25 @@
             show-password
           />
         </el-form-item>
+
+        <el-form-item label="验证码" prop="verifyCode">
+          <el-row :gutter="1" />
+          <el-row>
+            <el-col :span="6">
+              <el-input
+                v-model="registerForm.verifyCode"
+                type="text"
+                placeholder="输入验证码"
+                tabindex="3"
+                auto-complete="off"
+              />
+            </el-col>
+            <el-col :span="2">
+              <el-button @click="getVerifyCode">获取验证码</el-button>
+            </el-col>
+          </el-row>
+
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showRegisterDialog = false">取 消</el-button>
@@ -93,7 +112,8 @@ export default {
       showRegisterDialog: false,
       registerForm: {
         username: '',
-        password: ''
+        password: '',
+        verifyCode: ''
       }
     }
   },
@@ -121,16 +141,16 @@ export default {
       this.registerForm.password = ''
       this.showRegisterDialog = true
     },
-    // getVerifyCode() {
-    //   this.$store
-    //     .dispatch('user/getVerifyCode', this.registerForm.username)
-    //     .then(() => {
-    //       console.log('获取验证码成功')
-    //     })
-    //     .catch(() => {
-    //       console.log('获取验证码失败')
-    //     })
-    // },
+    getVerifyCode() {
+      this.$store
+        .dispatch('user/getVerifyCode', this.registerForm.username)
+        .then((res) => {
+          console.log('获取验证码成功 ' + JSON.stringify(res))
+        })
+        .catch(() => {
+          console.log('获取验证码失败')
+        })
+    },
     handleRegister() {
       console.log('handle register: ' + JSON.stringify(this.registerForm))
       this.$store
