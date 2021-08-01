@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+export function getVerifyCode(email) {
+  return request({
+    url: '/api/v1/verify/code?user=' + email,
+    method: 'get'
+  })
+}
+
 export function register(data) {
   console.log(JSON.stringify(data))
   return request({
@@ -9,16 +16,9 @@ export function register(data) {
   })
 }
 
-export function getVerifyCode(email) {
-  return request({
-    url: '/api/v1/verify/code?user=' + email,
-    method: 'get'
-  })
-}
-
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/api/v1/user/login',
     method: 'post',
     data
   })

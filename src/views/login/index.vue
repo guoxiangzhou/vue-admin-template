@@ -104,8 +104,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: '8188755@qq.com',
+        password: '1Qaz2Wsx.'
       },
       redirect: undefined,
 
@@ -130,15 +130,17 @@ export default {
       console.log('登陆')
       this.$store
         .dispatch('user/login', this.loginForm)
-        .then(() => {
-          this.$router.push({ path: this.redirect || '/' })
+        .then((res) => {
+          console.log('response ' + JSON.stringify(res))
+          // this.$router.push({ path: this.redirect || '/' })
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err)
         })
     },
     showRegisterDlg() {
       this.registerForm.username = '8188755@qq.com'
-      this.registerForm.password = ''
+      this.registerForm.password = '1Qaz2Wsx.'
       this.showRegisterDialog = true
     },
     getVerifyCode() {
