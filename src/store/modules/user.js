@@ -59,6 +59,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         if (response.code === 0) {
+          console.log(document.cookie)
           commit('SET_TOKEN', response.token)
           setToken(response.token)
           resolve(response)

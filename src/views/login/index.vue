@@ -104,8 +104,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: '8188755@qq.com',
+        password: '1Qaz2Wsx.'
       },
       redirect: undefined,
 
