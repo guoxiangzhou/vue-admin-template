@@ -3,7 +3,7 @@
     <div class="app-container">
       <div class="filter-container">
         <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">
-          新游戏
+          创建应用
         </el-button>
       </div>
 

@@ -71,6 +71,7 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
+    // debugger
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
