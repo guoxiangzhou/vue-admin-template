@@ -1,16 +1,20 @@
 import request from '@/utils/request'
 
-export function getVerifyCode(email) {
+export function getVerifyCode(email, t) {
   return request({
-    url: '/api/v1/verify/code?user=' + email,
-    method: 'get'
+    url: '/verify/code',
+    method: 'get',
+    params: {
+      username: email,
+      type: t
+    }
   })
 }
 
 export function register(data) {
   console.log(JSON.stringify(data))
   return request({
-    url: '/api/v1/user/register',
+    url: '/user/register',
     method: 'post',
     data
   })
@@ -18,7 +22,7 @@ export function register(data) {
 
 export function login(data) {
   return request({
-    url: '/api/v1/user/login',
+    url: '/user/login',
     method: 'post',
     data
   })
@@ -26,7 +30,7 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: '/user/info',
     method: 'get',
     params: { token }
   })

@@ -24,47 +24,65 @@ const users = {
 }
 
 module.exports = [
-  // user login
+  // verify code
   {
-    url: '/vue-admin-template/user/login',
-    type: 'post',
-    response: config => {
-      const { username } = config.body
-      const token = tokens[username]
-
-      // mock error
-      if (!token) {
-        return {
-          code: 60204,
-          message: 'Account and password are incorrect.'
-        }
-      }
+    url: '/verify/code',
+    type: 'get',
+    response: request => {
+      console.log(request.query)
 
       return {
-        code: 20000,
-        data: token
+        code: 0,
+        msg: 'ok'
+      }
+    }
+  },
+
+  // register user
+  {
+    url: '/user/register',
+    type: 'post',
+    response: request => {
+      return {
+        code: 0,
+        msg: 'ok'
+      }
+    }
+  },
+
+  // user login
+  {
+    url: '/user/login',
+    type: 'post',
+    response: request => {
+      console.log('login ' + JSON.stringify(request.body))
+      return {
+        code: 0,
+        token: 'admin-token'
       }
     }
   },
 
   // get user info
   {
-    url: '/vue-admin-template/user/info\.*',
+    url: '/user/info',
     type: 'get',
-    response: config => {
-      const { token } = config.query
+    response: request => {
+      const { token } = request.query
       const info = users[token]
 
-      // mock error
-      if (!info) {
-        return {
-          code: 50008,
-          message: 'Login failed, unable to get user details.'
-        }
-      }
+      console.log(JSON.stringify(request))
+
+      // // mock error
+      // if (!info) {
+      //   return {
+      //     code: 50008,
+      //     message: 'Login failed, unable to get user details.'
+      //   }
+      // }
 
       return {
-        code: 20000,
+        code: 0,
         data: info
       }
     }

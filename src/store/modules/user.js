@@ -42,9 +42,10 @@ const actions = {
   },
 
   // get verify code
-  getVerifyCode({ commit }, email) {
+  getVerifyCode({ commit }, data) {
+    console.log('email:' + data.username + ', type:' + data.type)
     return new Promise((resolve, reject) => {
-      getVerifyCode(email.trim()).then(response => {
+      getVerifyCode(data.username.trim(), data.type).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -57,10 +58,11 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        // const { data } = response
-        // commit('SET_TOKEN', data.token)
-        // setToken(data.token)
-        resolve(response)
+        if (response.code === 0) {
+          commit('SET_TOKEN', response.token)
+          setToken(response.token)
+          resolve(response)
+        }
       }).catch(error => {
         reject(error)
       })

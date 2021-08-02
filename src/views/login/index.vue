@@ -104,8 +104,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '8188755@qq.com',
-        password: '1Qaz2Wsx.'
+        username: '',
+        password: ''
       },
       redirect: undefined,
 
@@ -120,19 +120,22 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        // this.redirect = route.query && route.query.redirect
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
   methods: {
     handleLogin() {
-      console.log('登陆')
       this.$store
         .dispatch('user/login', this.loginForm)
         .then((res) => {
-          console.log('response ' + JSON.stringify(res))
-          // this.$router.push({ path: this.redirect || '/' })
+          Message({
+            message: '登陆成功',
+            type: 'success',
+            duration: 5 * 1000
+          })
+          this.$router.push({ path: this.redirect || '/' })
         })
         .catch((err) => {
           console.log(err)
@@ -145,7 +148,7 @@ export default {
     },
     getVerifyCode() {
       this.$store
-        .dispatch('user/getVerifyCode', this.registerForm.username)
+        .dispatch('user/getVerifyCode', { username: this.registerForm.username, type: 'register' })
         .then((res) => {
           console.log('获取验证码成功 ' + JSON.stringify(res))
         })
@@ -166,6 +169,9 @@ export default {
               duration: 5 * 1000
             })
           } else {
+            this.loginForm.username = this.registerForm.username
+            this.loginForm.password = this.registerForm.password
+            this.showRegisterDialog = false
             Message({
               message: '注册成功',
               type: 'success',
