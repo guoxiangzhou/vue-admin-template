@@ -1,4 +1,5 @@
 import { login, logout, getInfo, getVerifyCode, register } from '@/api/user'
+import { createGame, getGameList } from '@/api/game'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -91,9 +92,9 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  logout({ commit }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout().then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
@@ -110,6 +111,29 @@ const actions = {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
       resolve()
+    })
+  },
+
+  // new game
+  newGame({ commit }, data) {
+    console.log('----' + JSON.stringify(data))
+    return new Promise((resolve, reject) => {
+      createGame(data).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  // get game list
+  listGame({ commit }) {
+    return new Promise((resolve, reject) => {
+      getGameList().then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
     })
   }
 }

@@ -168,7 +168,7 @@ export default {
           console.log('服务器返回结果 : ' + JSON.stringify(res))
           if (res.code !== 0) {
             Message({
-              message: res.msg,
+              message: res.data,
               type: 'error',
               duration: 5 * 1000
             })
