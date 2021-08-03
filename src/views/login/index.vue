@@ -150,10 +150,14 @@ export default {
       this.$store
         .dispatch('user/getVerifyCode', { username: this.registerForm.username, type: 'register' })
         .then((res) => {
-          console.log('获取验证码成功 ' + JSON.stringify(res))
+          console.log('获取验证码成功 ')
         })
-        .catch(() => {
-          console.log('获取验证码失败')
+        .catch((err) => {
+          Message({
+            message: err,
+            type: 'error',
+            duration: 5 * 1000
+          })
         })
     },
     handleRegister() {

@@ -46,7 +46,11 @@ const actions = {
     console.log('email:' + data.username + ', type:' + data.type)
     return new Promise((resolve, reject) => {
       getVerifyCode(data.username.trim(), data.type).then(response => {
-        resolve(response)
+        if (response.code === 0) {
+          resolve(response)
+        } else {
+          reject(response.data)
+        }
       }).catch(error => {
         reject(error)
       })
@@ -59,7 +63,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         if (response.code === 0) {
-          console.log(document.cookie)
+          console.log(response)
           commit('SET_TOKEN', response.token)
           setToken(response.token)
           resolve(response)
@@ -71,21 +75,15 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({ commit }) {
     // debugger
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+      getInfo().then(response => {
+        console.log('info: ' + JSON.stringify(response))
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+        commit('SET_NAME', response.data.nickname)
+        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+        resolve(response)
       }).catch(error => {
         reject(error)
       })
