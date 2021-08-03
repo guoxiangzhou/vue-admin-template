@@ -17,19 +17,24 @@
         highlight-current-row
         style="width: 100%;"
       >
-        <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+        <el-table-column label="Name" prop="name" sortable="custom" align="center" width="150" :class-name="getSortClass('name')">
+          <template slot-scope="{row}">
+            <span>{{ row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="ID" width="300px" align="center">
           <template slot-scope="{row}">
             <span>{{ row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Date" width="150px" align="center">
+        <el-table-column label="Token" width="500px" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.timestamp }}</span>
+            <span>{{ row.token }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Author" width="110px" align="center">
+        <el-table-column label="Create" width="150px" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.author }}</span>
+            <span>{{ row.create_time }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
@@ -37,13 +42,7 @@
             <el-button type="primary" size="mini">
               编辑
             </el-button>
-            <el-button v-if="row.status!='published'" size="mini" type="success">
-              发布
-            </el-button>
-            <el-button v-if="row.status!='draft'" size="mini">
-              草稿
-            </el-button>
-            <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+            <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
               删除
             </el-button>
           </template>
@@ -72,7 +71,6 @@
 </template>
 
 <script>
-import { parseTime } from '@/utils'
 import { Message } from 'element-ui'
 
 export default {
@@ -80,20 +78,7 @@ export default {
   data() {
     return {
       listLoading: false,
-      list: [
-        {
-          id: 1,
-          timestamp: parseTime(450431629957),
-          author: 'gxz',
-          status: 'published'
-        },
-        {
-          id: 2,
-          timestamp: parseTime(450431629957),
-          author: 'gxz',
-          status: 'draft'
-        }
-      ],
+      list: null,
       showNewGameDialog: false,
       newGameForm: {
         game_name: ''
@@ -123,6 +108,7 @@ export default {
               type: 'success',
               duration: 5 * 1000
             })
+            this.list = res.data
           }
         })
         .catch(() => {
@@ -149,6 +135,8 @@ export default {
               type: 'success',
               duration: 5 * 1000
             })
+            this.showNewGameDialog = false
+            this.getList()
           }
         })
         .catch(() => {
