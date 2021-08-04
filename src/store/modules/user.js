@@ -1,5 +1,5 @@
 import { login, logout, getInfo, getVerifyCode, register } from '@/api/user'
-import { createGame, getGameList } from '@/api/game'
+import { createGame, delGame, getGameList } from '@/api/game'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -131,6 +131,21 @@ const actions = {
     return new Promise((resolve, reject) => {
       getGameList().then(res => {
         resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  // delete game
+  deleteGame({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      delGame(id).then(res => {
+        if (res.code !== 0) {
+          reject(res.data)
+        } else {
+          resolve(res)
+        }
       }).catch(error => {
         reject(error)
       })

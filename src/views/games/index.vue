@@ -17,7 +17,7 @@
         highlight-current-row
         style="width: 100%;"
       >
-        <el-table-column label="Name" prop="name" sortable="custom" align="center" width="150" :class-name="getSortClass('name')">
+        <el-table-column label="Name" prop="name" sortable="custom" align="center" width="100" :class-name="getSortClass('name')">
           <template slot-scope="{row}">
             <span>{{ row.name }}</span>
           </template>
@@ -27,12 +27,17 @@
             <span>{{ row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Token" width="500px" align="center">
+        <el-table-column label="Token" width="300px" align="center">
           <template slot-scope="{row}">
             <span>{{ row.token }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Create" width="150px" align="center">
+        <el-table-column label="Url" width="200px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.url }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Create" width="200px" align="center">
           <template slot-scope="{row}">
             <span>{{ row.create_time }}</span>
           </template>
@@ -42,7 +47,7 @@
             <el-button type="primary" size="mini">
               编辑
             </el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
+            <el-button type="danger" size="mini" @click="handleDelete(row,$index)">
               删除
             </el-button>
           </template>
@@ -99,7 +104,7 @@ export default {
           if (res.code !== 0) {
             Message({
               message: res.data,
-              type: '获取失败',
+              type: 'error',
               duration: 5 * 1000
             })
           } else {
@@ -126,7 +131,7 @@ export default {
           if (res.code !== 0) {
             Message({
               message: res.data,
-              type: '创建失败',
+              type: 'error',
               duration: 5 * 1000
             })
           } else {
@@ -144,13 +149,25 @@ export default {
         })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
-      })
-      this.list.splice(index, 1)
+      this.$store
+        .dispatch('user/deleteGame', row.id)
+        .then((res) => {
+          this.$notify({
+            title: 'Success',
+            message: 'Delete Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
+        })
+        .catch(() => {
+          this.$notify({
+            title: 'Error',
+            message: 'Delete failure',
+            type: 'error',
+            duration: 2000
+          })
+        })
     },
     getSortClass: function(key) {
       return 'descending'

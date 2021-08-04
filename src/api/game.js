@@ -14,3 +14,13 @@ export function getGameList() {
     method: 'get'
   })
 }
+
+export function delGame(game_id) {
+  return request({
+    url: '/game/delete',
+    method: 'delete',
+    params: {
+      id: game_id
+    }
+  })
+}
