@@ -65,8 +65,9 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         if (response.code === 0) {
           console.log(response)
-          commit('SET_TOKEN', response.token)
-          setToken(response.token)
+          var token = response.data
+          commit('SET_TOKEN', token)
+          setToken(token)
           resolve(response)
         }
       }).catch(error => {
